@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const bootcamps = require("./routes/bootcamps");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
+const errorHandler = require("./middleware/error");
 
 dotenv.config({ path: "./config/config.env" });
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/api/v1/bootcamp", bootcamps);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

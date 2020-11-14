@@ -1,4 +1,5 @@
 const Bootcamp = require("../models/Bootcamp");
+const ErrorResponse = require("../utilis/errorResponse");
 
 // @route GET  api/v1/bootcamp
 exports.getBootcamps = async (req, res, next) => {
@@ -14,17 +15,18 @@ exports.getBootcamps = async (req, res, next) => {
             data: bootcamp,
         });
     } catch (error) {
-        console.log(res.status(400).json({ success: false }));
+        next(new ErrorResponse(`bootcamp not found`, 404));
     }
 };
 
-// @route POST api/v1/bootcamp
+// @route GET api/v1/bootcamp
 exports.getBootcamp = async (req, res, next) => {
     try {
         const bootcamp = await Bootcamp.findById(req.params.id);
 
         if (!bootcamp) {
-            return console.log(res.status(400).json({ success: false }));
+            // return console.log(res.status(400).json({ success: false }));
+            new ErrorResponse(`bootcamp not found id of ${req.params.id}`, 404);
         }
 
         res.status(200).json({
@@ -32,7 +34,11 @@ exports.getBootcamp = async (req, res, next) => {
             data: bootcamp,
         });
     } catch (error) {
-        console.log(res.status(400).json({ success: false }));
+        //console.log(res.status(400).json({ success: false }));
+        // next(error);
+        next(
+            new ErrorResponse(`bootcamp not found id of ${req.params.id}`, 404)
+        );
     }
 };
 
@@ -45,7 +51,8 @@ exports.createBootcamp = async (req, res, next) => {
             data: bootcamp,
         });
     } catch (error) {
-        res.status(400).json({ success: false });
+        //res.status(400).json({ success: false });
+        next(new ErrorResponse(`bootcamp not found`, 404));
     }
 };
 
